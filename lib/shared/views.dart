@@ -5,11 +5,13 @@ class MyTextField extends StatelessWidget {
       {super.key,
       required this.hintText,
       required this.iconData,
+      this.controller,
       this.obscureText = false});
 
   final IconData iconData;
   final String hintText;
   final bool obscureText;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class MyTextField extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: TextField(
+        controller: controller,
         decoration: decoration,
         obscureText: obscureText,
       ),
