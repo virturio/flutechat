@@ -1,10 +1,13 @@
+import 'package:flutechat/auth/auth_service.dart';
 import 'package:flutechat/auth/auth_state.dart';
 import 'package:flutechat/auth/login/login_page.dart';
 import 'package:flutechat/auth/register/register_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthView extends StatefulWidget {
-  const AuthView({super.key});
+  const AuthView({super.key, required this.authService});
+
+  final AuthService authService;
 
   @override
   State<AuthView> createState() => _AuthViewState();
@@ -29,7 +32,9 @@ class _AuthViewState extends State<AuthView> {
               margin: const EdgeInsets.all(24),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: isRegister ? const RegisterPage() : const LoginPage(),
+                child: isRegister
+                    ? RegisterPage(authService: widget.authService)
+                    : LoginPage(authService: widget.authService),
               )),
         ),
       ),

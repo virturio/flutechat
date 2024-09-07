@@ -1,9 +1,33 @@
+import 'package:flutechat/auth/auth_service.dart';
 import 'package:flutechat/auth/auth_state.dart';
 import 'package:flutechat/shared/views.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key, required this.authService});
+  final AuthService authService;
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +39,18 @@ class LoginPage extends StatelessWidget {
       context.dispatchNotification(const AuthSettings(isRegister: true));
     }
 
+    void loginCallback() async {
+      final String email = _emailController.text;
+      final String password = _passwordController.text;
+      await widget.authService.loginWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    }
+
     Widget loginButton = SubmitButton(
       submitText: "Login",
-      onTap: () {},
+      onTap: loginCallback,
     );
 
     Widget forgotPasswordText = const Align(
@@ -56,7 +89,10 @@ class LoginPage extends StatelessWidget {
       children: [
         const BrandLogo(),
         const SizedBox(height: 32),
-        _LoginPageForm(),
+        _LoginPageForm(
+          emailController: _emailController,
+          passwordController: _passwordController,
+        ),
         const SizedBox(height: 8),
         forgotPasswordText,
         const SizedBox(height: 16),
@@ -70,17 +106,25 @@ class LoginPage extends StatelessWidget {
 }
 
 class _LoginPageForm extends StatelessWidget {
+  const _LoginPageForm(
+      {required this.emailController, required this.passwordController});
+
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
   @override
   Widget build(BuildContext context) {
-    Widget emailTextField = const MyTextField(
+    Widget emailTextField = MyTextField(
       hintText: "Email",
       iconData: Icons.email,
+      controller: emailController,
     );
 
-    Widget passwordTextField = const MyTextField(
+    Widget passwordTextField = MyTextField(
       hintText: "Password",
       iconData: Icons.lock,
       obscureText: true,
+      controller: passwordController,
     );
 
     return Column(
