@@ -1,5 +1,5 @@
 import 'package:flutechat/auth/auth_service.dart';
-import 'package:flutechat/auth/auth_state.dart';
+import 'package:flutechat/auth/auth_settings.dart';
 import 'package:flutechat/shared/views.dart';
 import 'package:flutter/material.dart';
 
@@ -39,13 +39,25 @@ class _LoginPageState extends State<LoginPage> {
       context.dispatchNotification(const AuthSettings(isRegister: true));
     }
 
+    Future<void> showErrorDialog(Object e) async {
+      await showDialog(
+          context: context,
+          builder: (context) => AlertDialog.adaptive(
+                title: Text(e.toString()),
+              ));
+    }
+
     void loginCallback() async {
       final String email = _emailController.text;
       final String password = _passwordController.text;
-      await widget.authService.loginWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      try {
+        await widget.authService.loginWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      } catch (e) {
+        await showErrorDialog(e);
+      }
     }
 
     Widget loginButton = SubmitButton(

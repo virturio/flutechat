@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutechat/auth/auth_gate.dart';
 import 'package:flutechat/auth/auth_service.dart';
-import 'package:flutechat/auth/auth_view.dart';
 import 'package:flutechat/firebase_options.dart';
+import 'package:flutechat/home/homepage.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -24,9 +25,20 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.linux: OpenUpwardsPageTransitionsBuilder(),
+            TargetPlatform.macOS: FadeUpwardsPageTransitionsBuilder(),
+          },
+        ),
         useMaterial3: true,
       ),
-      home: AuthView(authService: authService),
+      home: AuthGate(
+        authService: authService,
+        child: const Homepage(),
+      ),
     );
   }
 }

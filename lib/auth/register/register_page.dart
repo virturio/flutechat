@@ -1,5 +1,5 @@
 import 'package:flutechat/auth/auth_service.dart';
-import 'package:flutechat/auth/auth_state.dart';
+import 'package:flutechat/auth/auth_settings.dart';
 import 'package:flutechat/shared/views.dart';
 import 'package:flutter/material.dart';
 
@@ -42,15 +42,27 @@ class _RegisterPageState extends State<RegisterPage> {
       context.dispatchNotification(const AuthSettings(isRegister: false));
     }
 
+    Future<void> showErrorDialog(Object e) async {
+      await showDialog(
+          context: context,
+          builder: (context) => AlertDialog.adaptive(
+                title: Center(child: Text(e.toString())),
+              ));
+    }
+
     void registerCallback() async {
-      final String email = _emailController.text;
-      final String password = _passwordController.text;
-      final String confirmPassword = _confirmPasswordController.text;
-      await widget.authService.register(
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      );
+      try {
+        final String email = _emailController.text;
+        final String password = _passwordController.text;
+        final String confirmPassword = _confirmPasswordController.text;
+        await widget.authService.register(
+          email: email,
+          password: password,
+          confirmPassword: confirmPassword,
+        );
+      } catch (e) {
+        await showErrorDialog(e);
+      }
     }
 
     Widget registerButton = SubmitButton(
