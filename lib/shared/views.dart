@@ -4,11 +4,11 @@ class MyTextField extends StatelessWidget {
   const MyTextField(
       {super.key,
       required this.hintText,
-      required this.iconData,
+      this.iconData,
       this.controller,
       this.obscureText = false});
 
-  final IconData iconData;
+  final IconData? iconData;
   final String hintText;
   final bool obscureText;
   final TextEditingController? controller;
@@ -63,7 +63,7 @@ class SubmitButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: TextButton(
-        onPressed: () {},
+        onPressed: onTap,
         child: Text(
           submitText,
           style: const TextStyle(

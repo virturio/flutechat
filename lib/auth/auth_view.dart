@@ -1,5 +1,5 @@
 import 'package:flutechat/auth/auth_service.dart';
-import 'package:flutechat/auth/auth_state.dart';
+import 'package:flutechat/auth/auth_settings.dart';
 import 'package:flutechat/auth/login/login_page.dart';
 import 'package:flutechat/auth/register/register_page.dart';
 import 'package:flutter/material.dart';
